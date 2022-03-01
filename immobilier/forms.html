@@ -1,0 +1,73 @@
+ {% extends 'base.html' %}
+    {% load static %}
+    {% block content %}
+    <div class="app-admin-wrap layout-sidebar-large">
+       {% include 'myaccount/navbar.html' %}
+        {% include 'myaccount/leftsidebar.html' %}        <!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+<!-- ============ Body content start ============= -->
+<div class="main-content"><div class="breadcrumb">
+                    <h1 class="mr-2">&nbsp;</h1>
+                    <ul>
+                        <li><a href="">Ajout des utilisateurs / membres</a></li>
+
+                    </ul>
+                </div><div class="separator-breadcrumb border-top"></div>
+<div class="row"><div class="col-lg-12"><div class="card">
+<div class="card-body">
+<div class="card-title">Formulaire Locataire</div>
+<form id="formlocataire" action="" method="post">
+<div class="card-body">
+<div class="form-row">
+        
+	<div class="form-group col-md-12">
+
+        <label class="ul-form__label" for="inputEmail4">nom:                 </label>
+          <div class="input-group mb-3">
+         <input name="nom"  value="{{form.nom.value}}"  class="form-control" type="text" placeholder="nom" aria-label="nom" aria-describedby="basic-addon1" />                                     </div>
+         {% for erreur in form.nom.errors %}
+              <div class="alert alert-danger ml-3">{{ erreur }}</div>
+          {% endfor %}
+        </div>
+  </div>
+	
+<div class="form-row">
+        
+	<div class="form-group col-md-12">
+
+        <label class="ul-form__label" for="inputEmail4">prenom:                 </label>
+          <div class="input-group mb-3">
+         <input name="prenom"  value="{{form.prenom.value}}"  class="form-control" type="text" placeholder="prenom" aria-label="nom" aria-describedby="basic-addon1" />                                     </div>
+         {% for erreur in form.prenom.errors %}
+              <div class="alert alert-danger ml-3">{{ erreur }}</div>
+          {% endfor %}
+        </div>
+  </div>
+	
+<div class="form-row">
+        
+	<div class="form-group col-md-12">
+
+        <label class="ul-form__label" for="inputEmail4">mobile:                 </label>
+          <div class="input-group mb-3">
+         <input name="mobile"  value="{{form.mobile.value}}"  class="form-control" type="text" placeholder="mobile" aria-label="nom" aria-describedby="basic-addon1" />                                     </div>
+         {% for erreur in form.mobile.errors %}
+              <div class="alert alert-danger ml-3">{{ erreur }}</div>
+          {% endfor %}
+        </div>
+  </div>
+	<input class="btn btn-primary btn-block m-1 mb-3" type="submit" value="Enregistrer" /></div></form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Footer Start -->
+<div class="flex-grow-1"></div>
+{{% include 'myaccount/footer.html' %}}
+{{% endblock %}}
+<!-- fotter end -->
+
+</div>
+    </div>

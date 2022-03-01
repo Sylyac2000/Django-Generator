@@ -1,0 +1,47 @@
+
+
+def ajout(request):
+    form = LocataireModelForm()
+
+    if request.method =='POST':
+        form = LocataireModelForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('liste')
+
+    context = {
+        'form':form
+    }
+    return render(request,'immobilier/ajout.html',context)
+
+def liste(request):
+
+    locataires = Locataire.objects.all()
+
+
+    context = {
+        'locataires': locataires
+    }
+
+    return render(request,'immobilier/liste.html', context)
+
+def update(request, pk):
+
+    locataire = Locataire.objects.get(id=pk)
+
+    form = LocataireModelForm(instance=locataire)
+    if request.method == 'POST':
+        form = LocataireModelForm(request.POST, instance=locataire)
+        if form.is_valid():
+            form.save()
+            return redirect('liste')
+
+
+
+    context = {
+        form: form,
+        'locataire': locataire,
+    }
+
+    return render(request,'immobilier/update.html', context)
