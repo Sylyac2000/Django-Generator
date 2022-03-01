@@ -2,16 +2,47 @@ import os
 file_name = 'forms.py'
 f = open(file_name, 'w+')  # open file in append mode
 
-appname ="activite"
+appname ="reparation"
 
-modelname="Activite"
-modelnameLower ="activite"
-modelnamePlural ="activites"
+modelname="Reparation"
+modelnameLower ="reparation"
+modelnamePlural ="reparations"
 
-fields = ['activite', 'description', 'datecreation']
+fields = ['vehicule','chauffeur','descriptionsinistre','imagedusinistre','datedusinistre','datecreation','statut']
+
+fieldslabels = "labels = {\n\t\t"
+
+formfields = ''
+
+for field in fields:
+  formfields += '{0},'.format(field)
+
+
+for field in fields:
+  fieldslabels += '"{0}":  mark_safe(\'{0}<span class="text-danger">*</span>\'),\n\t\t'.format(field)
+
+fieldslabels += "}\n\t"
+
+fieldswidget = "widgets = {\n\t\t"
+
+for field in fields:
+  fieldswidget += '"{0}":  forms.TextInput(attrs={{\'class\': \'form-control\'}}),\n\t\t'.format(field)
+
+fieldswidget += "}\n\t"
+
+
+fieldsvalidation = ""
+
+for field in fields:
+  fieldsvalidation += "def clean_{0}(self):\n\t\t\t{0}=self.cleaned_data['{0}']\n\t\t\t return {0}\n\n\t\t ".format(field)
+
+fieldsvalidation += ""
+
 
 args = {'appname':appname, 'modelname':modelname, 'modelnameLower':modelnameLower, 'modelnamePlural':modelnamePlural,
-'fields':fields}
+'fields':fields,'formfields':formfields,'fieldslabels':fieldslabels,'fieldswidget':fieldswidget,'fieldsvalidation':fieldsvalidation}
+
+
 strCode = """
 
 from django.forms import ModelForm
@@ -22,53 +53,54 @@ class {modelname}Form(ModelForm):
     class Meta:
         model = {modelname}
 
-        fields = ('{fields[0]}','{fields[1]}')
-        #fields = '__all__'
+        fields = ({formfields})
+
+        #fields = ('{fields[0]}','{fields[1]}','{fields[2]}')        
         
+        #fields = '__all__'
+
+        {fieldslabels}
+        {fieldswidget}
+
     def __init__(self, user, *args, **kwargs):
         super({modelname}Form, self).__init__(*args, **kwargs)
         self.request = kwargs.pop('request', None)
         self.user = user
+
+      {fieldsvalidation}
+
+
 """.format(**args)
 f.write(strCode)
 
 f.close()
 
-fieldsdefinition = """ {{% extends 'base.html' %}}
-    {{% load static %}}
-    {{% block content %}}
-    <div class="app-admin-wrap layout-sidebar-large">
-       {{% include 'myaccount/navbar.html' %}}
-        {{% include 'myaccount/leftsidebar.html' %}}        <!-- =============== Left side End ================-->\n<div class="main-content-wrap sidenav-open d-flex flex-column">\n<!-- ============ Body content start ============= -->\n<div class="main-content"><div class="breadcrumb">
-                    <h1 class="mr-2">&nbsp;</h1>
-                    <ul>
-                        <li><a href="">Ajout des utilisateurs / membres</a></li>
+fieldsdefinition = """ 
+<form id="form" class="" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+{% for field in form %}\n
+<div class="mb-3 row">\n
+  \t<label class="col-sm-2 form-label" for="{{ field.id_for_label  }}">{{ field.label }}</label>\n
+  <div class="col-sm-10">\n
+  \t{{ field }}\n
+  {% for error in field.errors %}\n
+   \t<div class="alert alert-danger ml-3">{{ error }}</div>\n
+   {% endfor %}\n
+   </div>\n
+  </div>\n
+  {% endfor %}
+<div class="line"></div><br>
+                                        <div class="mb-3 row">
+                                            <div class="col-sm-4 offset-sm-2">
+												<a class="btn btn-warning  mb-2" href="{% url 'organisation:chauffeur-list' %}"><i class="fas fa-times"></i> Annuler</a>
 
-                    </ul>
-                </div><div class="separator-breadcrumb border-top"></div>\n<div class="row"><div class="col-lg-12"><div class="card">\n<div class="card-body">\n<div class="card-title">Formulaire {modelname}</div>\n<form id="form{modelnameLower}" action="" method="post">\n<div class="card-body">""".format(**args)
+                                                <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                                
+"""
 
-for field in fields:
-  fieldsdefinition += """\n<div class="form-row">
-        \n\t<div class="form-group col-md-12">\n
-        <label class="ul-form__label" for="inputEmail4">{0}:                 </label>
-          <div class="input-group mb-3">
-         <input name="{0}"  value="{{{{form.{0}.value}}}}"  class="form-control" type="text" placeholder="{0}" aria-label="nom" aria-describedby="basic-addon1" />                                     </div>
-         {{% for erreur in form.{0}.errors %}}
-              <div class="alert alert-danger ml-3">{{{{ erreur }}}}</div>
-          {{% endfor %}}
-        </div>
-  </div>\n\t""".format(field)
-
-
-strbtn = """<input class="btn btn-primary btn-block m-1 mb-3" type="submit" value="Enregistrer" /></div></form>\n</div>\n</div>\n</div>\n</div>\n</div>\n
-<!-- Footer Start -->
-<div class="flex-grow-1"></div>
-{{% include 'myaccount/footer.html' %}}
-{{% endblock %}}
-<!-- fotter end -->
-\n</div>
-    </div>"""
-fieldsdefinition += strbtn
 
 html_file_name = 'forms.html'
 fht = open(html_file_name, 'w+') 
