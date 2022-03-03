@@ -1,0 +1,1 @@
+Ce dossier contient les vues CRUD(Create Read Update Delete). Ces vues sont basées sur un design(ici bootstrap-simple-admin)

@@ -1,0 +1,159 @@
+    {% extends "base.html" %}
+{% load static %}
+  {% block title %}Sinistre -EDIT{% endblock %}
+{% block css %}
+    <link href="{% static 'assets/vendor/datatables/datatables.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4@5.0.8/bootstrap-4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css" integrity="sha512-rxThY3LYIfYsVCWPCW9dB0k+e3RZB39f23ylUYTEuZMDrN/vRqLdaCBo/FbvVT6uC2r0ObfPzotsfKF9Qc5W5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+        <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+
+<div class="wrapper">
+    {% include "myaccount/navbar.html" %}
+            <!-- end of navbar navigation -->
+            <div class="content">
+                <div class="container">
+                    <div class="page-title">
+                        <h3>Modification d'un sinistre</h3>
+                        {% for msg in messages %}
+                            <div class="alert alert-success">
+                              <h5 class="alert-title"><i class="fas fa-check"></i> Succès</h5>
+                                       {{ msg }}
+                            </div>
+
+
+                        {% endfor %}
+
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                          <div class="card">
+                                <div class="card-header">Modification d'un sinistre</div>
+                                <div class="card-body">
+                                    <h5 class="card-title"></h5>
+                                    <form id="form" class="" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                       
+
+                                         {% for field in form %}
+                                            <div class="mb-3 row">
+                                                <label class="col-sm-2 form-label" for="{ field.id_for_label  }">{{ field.label }}</label>
+                                                <div class="col-sm-10">
+
+                                                {% if field.name == "aavehicule" %}
+
+                                                    {{ field }}
+                                                    </div>
+                                                 {% else %}
+                                                    {{ field }}
+                                                {% endif %}
+                                                {% for error in field.errors %}
+                                                    
+                                                    <div class="alert alert-danger ml-3">{ error }</div>
+                                                {% endfor %}
+                                                </div>
+
+                                            </div>
+                                        {% endfor %}
+
+                                      <div class="line"></div><br>
+                                        <div class="mb-3 row">
+                                            <div class="col-sm-4 offset-sm-2">
+												<a class="btn btn-warning  mb-2" href="{% url 'reparation:sinistre-list' %}"><i class="fas fa-times"></i> Annuler</a>
+
+                                                <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-paper-plane"></i> Envoyer</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+ <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/vendor/datatables/datatables.min.js' %}"></script>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="{% static 'assets/js/dist/jquery.validate.js' %}"></script>
+    <script src="{% static 'assets/js/dist/localization/messages_fr.js' %}" type="text/javascript"></script>
+
+
+     <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.fr.min.js" integrity="sha512-fx3aztaUjb4NyoD+Tso5g7R1l29bU3jnnTfNRKBiY9fdQOHzVhKJ10wEAgQ1zM/WXCzB9bnVryHD1M40775Tsw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>   <script src="{% static 'assets/js/initiate-datatables.js' %}"></script>
+    <script src="{% static 'assets/js/script.js' %}"></script>
+    <script>
+    $(document).ready(function () {
+        //alert("eaeaea")
+
+        $('#sidebar').toggleClass('active');
+        $('#body').toggleClass('active');
+
+        select2();
+
+        $('#id_dateassignation').datepicker({
+            language: 'fr',
+            format: "yyyy-mm-dd",
+
+        });
+
+         $("#form").validate({
+             rules: {
+                 "id_vehicule": {
+                     "required": true,
+
+                 },
+                 "id_service": {
+                     "required": true,
+
+                 },
+                 "id_datelimiteouecheance": {
+                     "required": true,
+
+                 },
+
+             },
+             errorElement: "div",
+             errorClass: 'alert alert-danger',
+              highlight: function (element, errorClass, validClass) {
+
+
+                $(element).removeClass("alert alert-danger").removeClass("is-invalid");
+
+
+
+              },
+             unhighlight: function (element, errorClass, validClass) {
+
+                //$(element).addClass("is-valid").removeClass("is-invalid");
+                $(element).removeClass("alert alert-danger").removeClass("is-invalid");
+
+
+              },
+             errorPlacement: function (error, element) {
+                 var elem = $(element);
+                 if (elem.hasClass("select2-hidden-accessible")) {
+                     element = $("#select2-" + elem.attr("id") + "-container").parent();
+                     error.insertAfter(element);
+                 } else {
+                     error.insertAfter(element);
+                 }
+             }
+
+         });
+    });
+    </script>
+{% endblock %}

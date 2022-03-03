@@ -1,5 +1,5 @@
 import os
-file_name = 'forms.py'
+file_name = 'urls.py'
 f = open(file_name, 'w+')  # open file in append mode
 
 appname ="reparation"
@@ -10,71 +10,39 @@ modelnamePlural ="sinistres"
 
 fields = ['vehicule','chauffeur','descriptionsinistre','imagedusinistre','datedusinistre','datecreation','statut']
 
-fieldslabels = "labels = {\n\t\t"
-
-formfields = ''
-
-for field in fields:
-  formfields += '"{0}",'.format(field)
 
 
-for field in fields:
-  fieldslabels += '"{0}":  mark_safe(\'{0}<span class="text-danger">*</span>\'),\n\t\t'.format(field)
 
-fieldslabels += "}\n\t"
-
-fieldswidget = "widgets = {\n\t\t"
-
-for field in fields:
-  fieldswidget += '"{0}":  forms.TextInput(attrs={{\'class\': \'form-control\'}}),\n\t\t'.format(field)
-
-fieldswidget += "}\n\t"
-
-
-fieldsvalidation = ""
-
-for field in fields:
-  fieldsvalidation += "def clean_{0}(self):\n\t\t\t{0} = self.cleaned_data['{0}']\n\t\t\t return {0}\n\n\t\t ".format(field)
-
-fieldsvalidation += ""
 
 
 args = {'appname':appname, 'modelname':modelname, 'modelnameLower':modelnameLower, 'modelnamePlural':modelnamePlural,
-'fields':fields,'formfields':formfields,'fieldslabels':fieldslabels,'fieldswidget':fieldswidget,'fieldsvalidation':fieldsvalidation}
+'fields':fields}
 
 
 strCode = """
 
-from django.utils.safestring import mark_safe
-from django import forms
-from django.forms import ModelForm
+from django.urls import path
 
-from  {appname}.models import {modelname}
-class {modelname}Form(ModelForm):
+from {appname}.views import {modelname}ListePageView, {modelname}CreatePageView, {modelname}DeletePageView, {modelname}UpdatePageView
 
-    class Meta:
-        model = {modelname}
 
-        fields = ({formfields})
+app_name="{appname}"
 
-        #fields = '__all__'
+urlpatterns = [
 
-        {fieldslabels}
-        {fieldswidget}
+  path('{modelnameLower}/', {modelname}ListePageView.as_view(), name='{modelnameLower}-list'),
+  path('{modelnameLower}/add', {modelname}CreatePageView.as_view(), name='{modelnameLower}-add'),
+  path('{appname}/edit/<int:pk>', {modelname}UpdatePageView.as_view(), name='{modelnameLower}-edit'),
+  #path('{modelnameLower}/details/<int:pk>', {modelname}DetailsPageView.as_view(), name='{modelnameLower}-details'),
+  path('{modelnameLower}/delete/<int:pk>', {modelname}DeletePageView.as_view(), name='{modelnameLower}-delete'),
 
-    def __init__(self, user, *args, **kwargs):
-        super({modelname}Form, self).__init__(*args, **kwargs)
-        self.request = kwargs.pop('request', None)
-        self.user = user
-
-      {fieldsvalidation}
-
+]
 
 """.format(**args)
 f.write(strCode)
 
 f.close()
-
+'''
 fieldsdefinition = """ 
 <form id="form" class="" method="post" enctype="multipart/form-data">
 {% csrf_token %}
@@ -112,4 +80,4 @@ fht.close()
 directory ='{0}/'.format(appname)
 if not os.path.exists(directory):
     os.makedirs(directory)
-os.replace(html_file_name,directory+html_file_name)
+os.replace(html_file_name,directory+html_file_name)'''

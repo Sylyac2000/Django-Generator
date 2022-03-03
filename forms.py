@@ -1,17 +1,17 @@
 
 
+from django.utils.safestring import mark_safe
+from django import forms
 from django.forms import ModelForm
 
-from  .models import Reparation
-class ReparationForm(ModelForm):
+from  reparation.models import Sinistre
+class SinistreForm(ModelForm):
 
     class Meta:
-        model = Reparation
+        model = Sinistre
 
-        fields = ('vehicule','chauffeur','descriptionsinistre')
+        fields = ("vehicule","chauffeur","descriptionsinistre","imagedusinistre","datedusinistre","datecreation","statut",)
 
-        #fields = (vehicule,chauffeur,descriptionsinistre,imagedusinistre,datedusinistre,datecreation,statut,)
-        
         #fields = '__all__'
 
         labels = {
@@ -36,36 +36,36 @@ class ReparationForm(ModelForm):
 	
 
     def __init__(self, user, *args, **kwargs):
-        super(ReparationForm, self).__init__(*args, **kwargs)
+        super(SinistreForm, self).__init__(*args, **kwargs)
         self.request = kwargs.pop('request', None)
         self.user = user
 
       def clean_vehicule(self):
-			vehicule=self.cleaned_data['vehicule']
+			vehicule = self.cleaned_data['vehicule']
 			 return vehicule
 
 		 def clean_chauffeur(self):
-			chauffeur=self.cleaned_data['chauffeur']
+			chauffeur = self.cleaned_data['chauffeur']
 			 return chauffeur
 
 		 def clean_descriptionsinistre(self):
-			descriptionsinistre=self.cleaned_data['descriptionsinistre']
+			descriptionsinistre = self.cleaned_data['descriptionsinistre']
 			 return descriptionsinistre
 
 		 def clean_imagedusinistre(self):
-			imagedusinistre=self.cleaned_data['imagedusinistre']
+			imagedusinistre = self.cleaned_data['imagedusinistre']
 			 return imagedusinistre
 
 		 def clean_datedusinistre(self):
-			datedusinistre=self.cleaned_data['datedusinistre']
+			datedusinistre = self.cleaned_data['datedusinistre']
 			 return datedusinistre
 
 		 def clean_datecreation(self):
-			datecreation=self.cleaned_data['datecreation']
+			datecreation = self.cleaned_data['datecreation']
 			 return datecreation
 
 		 def clean_statut(self):
-			statut=self.cleaned_data['statut']
+			statut = self.cleaned_data['statut']
 			 return statut
 
 		 

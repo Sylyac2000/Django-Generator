@@ -6,62 +6,62 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from reparation.models import Reparation
-from reparation.forms import ReparationForm
+from reparation.models import Sinistre
+from reparation.forms import SinistreForm
 
-from reparation.views import ReparationListePageView, ReparationCreatePageView, ReparationDeletePageView, ReparationUpdatePageView
+#from reparation.views import SinistreListePageView, SinistreCreatePageView, SinistreDeletePageView, SinistreUpdatePageView
 
-class ReparationListePageView(LoginRequiredMixin,ListView):
-  model = Reparation
-  template_name = "reparation/reparation-list.html"
-  context_object_name = "reparations"
-
-
+class SinistreListePageView(LoginRequiredMixin,ListView):
+  model = Sinistre
+  template_name = "reparation/sinistre-list.html"
+  context_object_name = "sinistres"
 
 
-class ReparationCreatePageView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-  model = Reparation
-  form_class = ReparationForm
-  template_name = "reparation/reparation-add.html"
-  context_object_name = "reparation"
+
+
+class SinistreCreatePageView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+  model = Sinistre
+  form_class = SinistreForm
+  template_name = "reparation/sinistre-add.html"
+  context_object_name = "sinistre"
 
 
   def get_success_url(self):
-    return reverse("reparation:reparation-list")
+    return reverse("sinistre:sinistre-list")
 
-  success_message = "Reparation  ajouté avec succès!"
+  success_message = "Sinistre  ajouté avec succès!"
 
   def get_form_kwargs(self):
-    kwargs = super(ReparationCreatePageView, self).get_form_kwargs()
+    kwargs = super(SinistreCreatePageView, self).get_form_kwargs()
     kwargs['user'] = self.request.user
     return kwargs
 
-class ReparationUpdatePageView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
-  model = Reparation
-  form_class = ReparationForm
-  template_name = "reparation/reparation-edit.html"
-  context_object_name = "reparation"
+class SinistreUpdatePageView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+  model = Sinistre
+  form_class = SinistreForm
+  template_name = "reparation/sinistre-edit.html"
+  context_object_name = "sinistre"
 
-  success_message = "Reparation modifiée avec succès!!"
+  success_message = "Sinistre modifiée avec succès!!"
 
   def get_success_url(self):
-    return reverse("reparation:reparation-list")
+    return reverse("sinistre:sinistre-list")
 
   def get_form_kwargs(self):
-    kwargs = super(ReparationUpdatePageView, self).get_form_kwargs()
+    kwargs = super(SinistreUpdatePageView, self).get_form_kwargs()
     kwargs['user'] = self.request.user
     return kwargs
 
 
 
-class ReparationDeletePageView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
-  model = Reparation
-  template_name = "reparation/reparation-delete.html"
-  context_object_name = "reparation"
+class SinistreDeletePageView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+  model = Sinistre
+  template_name = "reparation/sinistre-delete.html"
+  context_object_name = "sinistre"
 
-  success_message = "Reparation supprimée avec succès!"
+  success_message = "Sinistre supprimée avec succès!"
 
   def get_success_url(self):
-    return reverse("reparation:reparation-list")
+    return reverse("sinistre:sinistre-list")
 
 

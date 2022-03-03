@@ -4,9 +4,9 @@ f = open(file_name, 'w+')  # open file in append mode
 
 appname ="reparation"
 
-modelname="Reparation"
-modelnameLower ="reparation"
-modelnamePlural ="reparations"
+modelname="Sinistre"
+modelnameLower ="sinistre"
+modelnamePlural ="sinistres"
 
 fields = ['vehicule','chauffeur','descriptionsinistre','imagedusinistre','datedusinistre','datedusinistre','datecreation','statut']
 
@@ -24,7 +24,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from {appname}.models import {modelname}
 from {appname}.forms import {modelname}Form
 
-from {appname}.views import {modelname}ListePageView, {modelname}CreatePageView, {modelname}DeletePageView, {modelname}UpdatePageView
+#from {appname}.views import {modelname}ListePageView, {modelname}CreatePageView, {modelname}DeletePageView, {modelname}UpdatePageView
 
 class {modelname}ListePageView(LoginRequiredMixin,ListView):
   model = {modelname}

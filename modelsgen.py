@@ -1,13 +1,14 @@
 file_name = 'models.py'
 f = open(file_name, 'w+')  # open file in append mode
 
-appname ="assignation"
+appname ="reparation"
 
-modelname="Assignation"
-modelnameLower ="assignation"
-modelnamePlural ="assignations"
+modelname="Sinistre"
+modelnameLower ="sinistre"
+modelnamePlural ="sinistres"
 
-fields = ['vehicule', 'chauffeur','agence','dateassignation', 'datecreation']
+fields = ['vehicule','chauffeur','descriptionsinistre','imagedusinistre','datedusinistre','datecreation','statut']
+
 fieldsdefinition = "";
 fieldstrfunc = "def __str__(self):\n\t\treturn ";
 ordering = "ordering = [";
